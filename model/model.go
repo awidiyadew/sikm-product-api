@@ -14,10 +14,10 @@ type User struct {
 type Product struct {
 	gorm.Model `json:"-"`
 	ID         uint     `json:"id" gorm:"primarykey;"`
-	Name       string   `json:"name" gorm:"type:varchar(255);not null;" binding:"required"`
-	Price      int      `json:"price" gorm:"type:numeric(10);not null;" binding:"required,gte=1"`
-	CategoryID int      `json:"category_id" binding:"required"`
-	PostedBy   uint     `json:"posted_by" gorm:"type:varchar(255);not null;" binding:"required"`
+	Name       string   `json:"name" gorm:"type:varchar(255);not null;"`
+	Price      int      `json:"price" gorm:"type:numeric(10);not null;"`
+	CategoryID int      `json:"category_id"`
+	PostedBy   uint     `json:"posted_by" gorm:"type:varchar(255);not null;"`
 	User       User     `json:"-" gorm:"foreignKey:PostedBy"`          // product belong to user
 	Category   Category `json:"category" gorm:"foreignKey:CategoryID"` // product belong to category
 }
