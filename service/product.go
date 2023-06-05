@@ -2,8 +2,19 @@ package service
 
 import (
 	"product-api/apperror"
+	"product-api/apperror"
 	"product-api/model"
 	"product-api/repository"
+	"strings"
+)
+
+var (
+	blackListedWords = []string{
+		"termurah",
+		"terbaik",
+		"diskon",
+		"promo",
+	}
 	"strings"
 )
 

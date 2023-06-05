@@ -3,8 +3,12 @@ package repository
 import (
 	"errors"
 	"product-api/apperror"
+	"errors"
+	"product-api/apperror"
 	"product-api/model"
 
+	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 	"gorm.io/gorm"
@@ -29,6 +33,7 @@ func NewProductRepo(db *gorm.DB) *productRepoImpl {
 }
 
 func (r *productRepoImpl) FindAll() ([]model.Product, error) {
+	// TODO: select all product with category
 	// Preload() -> to join table when querying data which is have association with another table
 	// key -> field which is referencing to another table
 	var listProduct []model.Product
@@ -36,7 +41,7 @@ func (r *productRepoImpl) FindAll() ([]model.Product, error) {
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	// TODO: select all product with category
+	
 	return listProduct, nil
 }
 
