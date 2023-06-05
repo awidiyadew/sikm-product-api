@@ -41,12 +41,10 @@ func main() {
 	// handling method not allowed and route not found
 	router.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{
-			"error" : "page not found or method not allowed",
+			"error": "page not found or method not allowed",
 		})
-		
-	})
 
-	
+	})
 
 	productRouter := router.Group("/product")
 	{

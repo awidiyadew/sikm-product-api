@@ -33,7 +33,7 @@ func (r *productRepoImpl) FindAll() ([]model.Product, error) {
 	// key -> field which is referencing to another table
 	var listProduct []model.Product
 	result := r.db.Preload("Category").Find(&listProduct)
-	if result.Error != nil{
+	if result.Error != nil {
 		return nil, result.Error
 	}
 	// TODO: select all product with category
@@ -46,7 +46,7 @@ func (r *productRepoImpl) FindByID(id int) (*model.Product, error) {
 	// key -> field which is referencing to another table
 	var product model.Product
 	result := r.db.Preload("Category").Preload("User").Where("id = ?", id).First(&product)
-	if errors.Is(result.Error, gorm.ErrRecordNotFound){
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, apperror.ErrProductNotFound
 
 	}
@@ -54,35 +54,38 @@ func (r *productRepoImpl) FindByID(id int) (*model.Product, error) {
 }
 
 func (r *productRepoImpl) Insert(product *model.Product) error {
-	if err := r.db.Create(product).Error; err != nil{
-			// TODO: create product and check pgConn.PgError with code 23503 FK Violation
-			// Custom error with PgErr
+	if err := r.db.Create(product).Error; err != nil {
+		// TODO: create product and check pgConn.PgError with code 23503 FK Violation
+		// Custom error with PgErr
 		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr){
-		if pgErr.Code == pgerrcode.ForeignKeyViolation{
-			return apperror.ErrInvalidUserIdOrCategoryId
+		if errors.As(err, &pgErr) {
+			if pgErr.Code == pgerrcode.ForeignKeyViolation {
+				return apperror.ErrInvalidUserIdOrCategoryId
+			}
+			return err
 		}
-		return err
-	}
 	}
 	return nil
 }
 
 func (r *productRepoImpl) Update(id int, product *model.Product) error {
 	// TODO: Update only specific fields name, price, and category_id
-	 if err := r.db.Model(&model.Product{}).Where("id = ?", id).Updates(model.Product{
-		Name: product.Name,
-		Price: product.Price,
+	// Dont need initializer method
+	// Reason :  if we have passed a valid database model on the finisher method,
+	// then we don't need to call method .Model(&model.Product{}) or .Table("")
+	if err := r.db.Where("id = ?", id).Updates(model.Product{
+		Name:       product.Name,
+		Price:      product.Price,
 		CategoryID: product.CategoryID,
 	}).Error; err != nil {
 		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr){
-		if pgErr.Code == pgerrcode.ForeignKeyViolation{
-			return apperror.ErrInvalidUserIdOrCategoryId
+		if errors.As(err, &pgErr) {
+			if pgErr.Code == pgerrcode.ForeignKeyViolation {
+				return apperror.ErrInvalidUserIdOrCategoryId
+			}
+			return err
 		}
-		return err
 	}
-}
 	return nil
 }
 
