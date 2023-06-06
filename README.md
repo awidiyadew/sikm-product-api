@@ -131,6 +131,12 @@ API Contract: `DELETE /product/delete/:id`, sample response:
 ```
 
 ### Session 2: Middleware & JWT Authentication
+Session based authentication:
+<img src="session-based.png">
+
+Token based (JWT) authentication:
+<img src="token-based.png">
+
 Objectives during session:
 - [ ] Understand concept of middleware
 - [ ] Implement [middleware](https://github.com/gin-gonic/gin/blob/master/docs/doc.md#using-middleware) in Gin
