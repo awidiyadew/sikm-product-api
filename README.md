@@ -137,6 +137,10 @@ Session based authentication:
 Token based (JWT) authentication:
 <img src="token-based.png">
 
+Ref: 
+- https://jerrynsh.com/all-to-know-about-auth-and-cookies/#:~:text=JWT%20is%20simply%20a%20token,within%20your%20browser's%20Cookies%20storage.
+- https://hackernoon.com/using-session-cookies-vs-jwt-for-authentication-sd2v3vci
+
 Objectives during session:
 - [ ] Understand concept of middleware
 - [ ] Implement [middleware](https://github.com/gin-gonic/gin/blob/master/docs/doc.md#using-middleware) in Gin
