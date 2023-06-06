@@ -2,19 +2,8 @@ package service
 
 import (
 	"product-api/apperror"
-	"product-api/apperror"
 	"product-api/model"
 	"product-api/repository"
-	"strings"
-)
-
-var (
-	blackListedWords = []string{
-		"termurah",
-		"terbaik",
-		"diskon",
-		"promo",
-	}
 	"strings"
 )
 
@@ -54,7 +43,6 @@ func (s *productServiceImpl) isValidName(name string) bool {
 	return true
 }
 func (s *productServiceImpl) GetList() ([]model.Product, error) {
-	// TODO: add code
 	products, err := s.productRepo.FindAll()
 	if err != nil {
 		return nil, err
@@ -63,12 +51,10 @@ func (s *productServiceImpl) GetList() ([]model.Product, error) {
 }
 
 func (s *productServiceImpl) GetByID(id int) (*model.ProductDetail, error) {
-	// TODO: add code
 	product, err := s.productRepo.FindByID(id)
 	if err != nil {
 		return &model.ProductDetail{}, err
 	}
-	// TODO: use DTO to transform data from model
 	// Mapping from DTO to Model
 	// DTO : model.ProductDetail{}
 	// Model : model.Product{}
@@ -85,7 +71,6 @@ func (s *productServiceImpl) GetByID(id int) (*model.ProductDetail, error) {
 }
 
 func (s *productServiceImpl) Store(payload *model.ProductRequest) error {
-	// TODO: add code
 	// Validate forbidden word
 	if !s.isValidName(payload.Name) {
 		return apperror.ErrInvalidProductName
@@ -109,17 +94,13 @@ func (s *productServiceImpl) Store(payload *model.ProductRequest) error {
 }
 
 func (s *productServiceImpl) Update(id int, product *model.Product) error {
-	// TODO: add code
 	if err := s.productRepo.Update(id, product); err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func (s *productServiceImpl) Delete(id int) error {
-	// TODO: add code
-
 	err := s.productRepo.Delete(id)
 	if err != nil {
 		return err

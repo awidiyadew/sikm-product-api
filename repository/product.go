@@ -3,12 +3,8 @@ package repository
 import (
 	"errors"
 	"product-api/apperror"
-	"errors"
-	"product-api/apperror"
 	"product-api/model"
 
-	"github.com/jackc/pgerrcode"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 	"gorm.io/gorm"
@@ -33,7 +29,6 @@ func NewProductRepo(db *gorm.DB) *productRepoImpl {
 }
 
 func (r *productRepoImpl) FindAll() ([]model.Product, error) {
-	// TODO: select all product with category
 	// Preload() -> to join table when querying data which is have association with another table
 	// key -> field which is referencing to another table
 	var listProduct []model.Product
@@ -41,12 +36,11 @@ func (r *productRepoImpl) FindAll() ([]model.Product, error) {
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	
+
 	return listProduct, nil
 }
 
 func (r *productRepoImpl) FindByID(id int) (*model.Product, error) {
-	// TODO: select product with category and user
 	// Preload() -> to join table when querying data which is have association with another table
 	// key -> field which is referencing to another table
 	var product model.Product
@@ -60,7 +54,6 @@ func (r *productRepoImpl) FindByID(id int) (*model.Product, error) {
 
 func (r *productRepoImpl) Insert(product *model.Product) error {
 	if err := r.db.Create(product).Error; err != nil {
-		// TODO: create product and check pgConn.PgError with code 23503 FK Violation
 		// Custom error with PgErr
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
@@ -74,7 +67,6 @@ func (r *productRepoImpl) Insert(product *model.Product) error {
 }
 
 func (r *productRepoImpl) Update(id int, product *model.Product) error {
-	// TODO: Update only specific fields name, price, and category_id
 	// Dont need initializer method
 	// Reason :  if we have passed a valid database model on the finisher method,
 	// then we don't need to call method .Model(&model.Product{}) or .Table("")
@@ -95,8 +87,6 @@ func (r *productRepoImpl) Update(id int, product *model.Product) error {
 }
 
 func (r *productRepoImpl) Delete(id int) error {
-	// TODO: delete by id
-
 	result := r.db.Where("id", id).Delete(&model.Product{})
 	if result.Error != nil {
 		return result.Error
