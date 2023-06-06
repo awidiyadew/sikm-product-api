@@ -13,8 +13,14 @@ type ProductRequest struct {
 	CategoryID int    `json:"category_id" binding:"required,numeric"` // if we dont use Gin, validate : "required"
 	PostedBy   int    `json:"posted_by" binding:"required,numeric"`
 }
+
 type UpdateProductRequest struct {
 	Name       string `json:"name" binding:"required,min=8"`
 	Price      int    `json:"price" binding:"required,gt=0"`
 	CategoryID int    `json:"category_id" binding:"required"`
+}
+
+type LoginRequest struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=8"`
 }

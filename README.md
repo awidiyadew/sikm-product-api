@@ -11,7 +11,7 @@
 ### Session 1
 Objectives during session:
 - [ ] Intro [Gin framework](https://github.com/gin-gonic/gin/blob/master/docs/doc.md)
-- [ ] Gin router and middleware
+- [ ] Gin router
 - [ ] Gin [model binding and validation](https://gin-gonic.com/docs/examples/binding-and-validation/)
 - [ ] Clean architecture
 - [ ] Concept of [DTO](https://en.wikipedia.org/wiki/Data_transfer_object)
@@ -119,7 +119,7 @@ Sample request payload and the validation:
 }
 ```
 
-#### [CHALLENGE] Feat 3: Delete product by ID
+#### [CHALLENGE] Feat 5: Delete product by ID
 - Should return status code `200` when delete success.
 - When product with the given `id` not found in DB, API should return response status code `404`.
 
@@ -130,8 +130,64 @@ API Contract: `DELETE /product/delete/:id`, sample response:
 }
 ```
 
-### Session 2: JWT Authentication
-TBA
+### Session 2: Middleware & JWT Authentication
+Objectives during session:
+- [ ] Understand concept of middleware
+- [ ] Implement [middleware](https://github.com/gin-gonic/gin/blob/master/docs/doc.md#using-middleware) in Gin
+- [ ] Understand [JWT authentication](https://jwt.io/introduction)
+- [ ] Implement JWT authentication and integrate with cookie
+- [ ] Implement JWT validation
+- [ ] Using gin context to carry data between middleware in a request
+
+#### Feat 1: Login and generate JWT token
+- Should response cookie with key `session_token`, active for 15 minutes, and `http only` cookie when email and password is valid.
+- JWT payload should contain required fields (check below JWT payload example), we will use package [go-jwt](github.com/golang-jwt/jwt) and follow [generate-token snippet](https://pkg.go.dev/github.com/golang-jwt/jwt/v5#example-New-Hmac).
+- Should validate request body with gin validator.
+- Should return error `400` when user by email is not found.
+- Should return error `400` when password is wrong.
+
+API Contract: `POST /user/login`, sample response:
+```
+// Response Body
+{
+    "message": "login success"
+}
+```
+
+Sample request payload and the validation:
+```
+{
+    "email": "john.doe@mail.com", // required, valid email
+    "password": "123456", // required, min length 8
+}
+```
+
+Sample JWT payload:
+```
+{
+  "iss": "product-api.com",
+  "user_id": "1",
+  "name": "John Doe",
+  "email": "john.doe@mail.com",
+  "iat": 1618985752,
+  "exp": 1618986952,
+  "scope": "user admin"
+}
+```
+
+#### Feat 2: Token validation
+Below is the Authorization rules/access on our API base on user's role:
+- Unauthorized: client don't need to authenticated to access this API
+    - `POST /user/login`
+- Authorized User: client must be logged in and have role/scope `USER` or `ADMIN`.
+    - `GET /product/list`
+    - `GET /product/:id`
+- Authorized Admin: client must be logged in and have role `ADMIN`.
+    - `POST /product/add`
+    - `PUT /product/:id`
+    - `DELETE /product/:id`
+
+Read docs on [how to validate token](https://pkg.go.dev/github.com/golang-jwt/jwt/v5#example-Parse-Hmac).
 
 ### Session 3: Deployment 
 TBA

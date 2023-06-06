@@ -16,16 +16,18 @@ import (
 func NewHandler(db *gorm.DB) *api.APIHandler {
 	productRepo := repository.NewProductRepo(db)
 	productService := service.NewProductService(productRepo)
+	userRepo := repository.NewUserRepo(db)
+	userService := service.NewUserService(userRepo)
 
-	return api.NewHandler(productService)
+	return api.NewHandler(productService, userService)
 }
 
 func main() {
 	db, err := db.Connect(db.DBCredential{
 		Host:         "localhost",
 		Username:     "postgres",
-		Password:     "Agustin22",
-		DatabaseName: "tutor_db",
+		Password:     "P@ssw0rd",
+		DatabaseName: "product_api",
 		Port:         5432,
 	})
 	if err != nil {
@@ -44,12 +46,21 @@ func main() {
 
 	})
 
+	userRouter := router.Group("/user")
+	{
+		userRouter.POST("/login", handler.Login)
+	}
+
 	productRouter := router.Group("/product")
 	{
+		// TODO: validate auth user must login
 		productRouter.GET("/list", handler.GetListProduct)
 		productRouter.GET("/:id", handler.GetProductDetail)
+
+		// TODO: validate auth user must login with role ADMIN
 		productRouter.POST("/add", handler.StoreProduct)
 		productRouter.PUT("/:id", handler.UpdateProduct)
+		productRouter.DELETE("/:id", handler.DeleteProduct)
 	}
 
 	router.Run(":3000")
