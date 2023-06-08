@@ -10,13 +10,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *APIHandler) GetListProduct(ctx *gin.Context) {
+func (h *APIHandler) GetListProduct(c *gin.Context) {
 	products, err := h.productService.GetList()
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, model.NewErrorResponse(err.Error()))
+		c.JSON(http.StatusNotFound, model.NewErrorResponse(err.Error()))
 		return
 	}
-	ctx.JSON(http.StatusOK, products)
+	c.JSON(http.StatusOK, products)
 }
 
 func (h *APIHandler) GetProductDetail(ctx *gin.Context) {
