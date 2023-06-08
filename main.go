@@ -54,14 +54,14 @@ func main() {
 
 	productRouter := router.Group("/product")
 	{
-		productRouter.Use(middleware.Auth())
+		productRouter.Use(middleware.Auth()) // API after this line  will be protected with auth (within code scope {productRouter})
 		productRouter.GET("/list", handler.GetListProduct)
 		productRouter.GET("/:id", handler.GetProductDetail)
 	}
 
 	productAdmin := router.Group("/product")
 	{
-		productAdmin.Use(middleware.AuthAdmin())
+		productAdmin.Use(middleware.AuthAdmin()) // API after this line  will be protected with auth admin (within code scope {productAdmin})
 		productAdmin.POST("/add", handler.StoreProduct)
 		productAdmin.PUT("/:id", handler.UpdateProduct)
 		productAdmin.DELETE("/:id", handler.DeleteProduct)

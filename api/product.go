@@ -16,6 +16,10 @@ func (h *APIHandler) GetListProduct(c *gin.Context) {
 		c.JSON(http.StatusNotFound, model.NewErrorResponse(err.Error()))
 		return
 	}
+
+	c.SetCookie("secret", "psspppss", 900, "", "", false, true)         // http only true, cookie tidak bisa diakses JS
+	c.SetCookie("pengumuman", "besok libur", 900, "", "", false, false) // http only false, cookie bisa dibaca javascript
+
 	c.JSON(http.StatusOK, products)
 }
 
