@@ -43,6 +43,7 @@ func (h *APIHandler) StoreProduct(ctx *gin.Context) {
 		return
 	}
 
+	payload.PostedBy = ctx.GetInt("user_id")
 	err2 := h.productService.Store(&payload)
 	if err2 != nil {
 		if errors.Is(err2, apperror.ErrInvalidUserIdOrCategoryId) {

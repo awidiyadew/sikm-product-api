@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"product-api/model"
@@ -34,10 +35,15 @@ func validateJWT(c *gin.Context) {
 		return
 	}
 
+	// convert map to json then turn it into struct model.Claims
+	b, _ := json.Marshal(claims)
+	var customClaims model.Claims
+	json.Unmarshal(b, &customClaims)
+
 	// set jwt payload to gin context that can be shared within a request
-	c.Set("user_id", claims["user_id"])
-	c.Set("email", claims["email"])
-	c.Set("isAdmin", claims["scope"] == "ADMIN")
+	c.Set("user_id", customClaims.UserID)
+	c.Set("email", customClaims.Email)
+	c.Set("isAdmin", customClaims.Scope == "ADMIN")
 }
 
 func Auth() gin.HandlerFunc {
@@ -52,9 +58,8 @@ func AuthAdmin() gin.HandlerFunc {
 		validateJWT(c)
 
 		// get isAdmin data from context
-		val, exists := c.Get("isAdmin")
-		isAdmin := val.(bool) // casting string val to boolean
-		if !isAdmin || !exists {
+		isAdmin := c.GetBool("isAdmin")
+		if !isAdmin {
 			c.AbortWithStatusJSON(http.StatusForbidden, model.NewErrorResponse("admin access required!"))
 			return
 		}
