@@ -168,7 +168,7 @@ Sample request payload and the validation:
 ```
 {
     "email": "john.doe@mail.com", // required, valid email
-    "password": "123456", // required, min length 8
+    "password": "123456", // required, min length 6
 }
 ```
 
