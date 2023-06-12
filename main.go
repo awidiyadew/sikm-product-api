@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"product-api/api"
+	"product-api/config"
 	"product-api/db"
 	"product-api/middleware"
 	"product-api/model"
@@ -24,12 +25,13 @@ func NewHandler(db *gorm.DB) *api.APIHandler {
 }
 
 func main() {
+	config.Init()
 	db, err := db.Connect(db.DBCredential{
-		Host:         "localhost",
-		Username:     "postgres",
-		Password:     "P@ssw0rd",
-		DatabaseName: "product_api",
-		Port:         5432,
+		Host:         config.DBHost,
+		Username:     config.DBUsername,
+		Password:     config.DBPassword,
+		DatabaseName: config.DBName,
+		Port:         config.DBPort,
 	})
 	if err != nil {
 		log.Fatal("failed to connect db", err)

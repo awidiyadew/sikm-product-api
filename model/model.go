@@ -17,7 +17,7 @@ type Product struct {
 	Name       string   `json:"name" gorm:"type:varchar(255);not null;"`
 	Price      int      `json:"price" gorm:"type:numeric(10);not null;"`
 	PostedBy   uint     `json:"posted_by" gorm:"type:varchar(255);not null;"`
-	User       User     `json:"-" gorm:"foreignKey:PostedBy"`          // product belong to user
+	User       User     `json:"-" gorm:"foreignKey:PostedBy"` // product belong to user
 	CategoryID int      `json:"category_id"`
 	Category   Category `json:"category" gorm:"foreignKey:CategoryID"` // product belong to category
 }
