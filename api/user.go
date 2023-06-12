@@ -31,8 +31,8 @@ func (h *APIHandler) Login(c *gin.Context) {
 		return
 	}
 
-	// TODO: set token to cookie `session_token`
-	c.JSON(http.StatusOK, gin.H{
-		"token": token,
-	})
+	expiry15s := 15 * 60
+	c.SetCookie("session_token", token, expiry15s, "", "", false, true)
+
+	c.JSON(http.StatusOK, model.NewSuccessResponse("login success"))
 }

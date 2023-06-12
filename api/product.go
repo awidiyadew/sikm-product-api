@@ -10,13 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *APIHandler) GetListProduct(ctx *gin.Context) {
+func (h *APIHandler) GetListProduct(c *gin.Context) {
 	products, err := h.productService.GetList()
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, model.NewErrorResponse(err.Error()))
+		c.JSON(http.StatusNotFound, model.NewErrorResponse(err.Error()))
 		return
 	}
-	ctx.JSON(http.StatusOK, products)
+
+	c.SetCookie("secret", "psspppss", 900, "", "", false, true)         // http only true, cookie tidak bisa diakses JS
+	c.SetCookie("pengumuman", "besok libur", 900, "", "", false, false) // http only false, cookie bisa dibaca javascript
+
+	c.JSON(http.StatusOK, products)
 }
 
 func (h *APIHandler) GetProductDetail(ctx *gin.Context) {
@@ -43,6 +47,7 @@ func (h *APIHandler) StoreProduct(ctx *gin.Context) {
 		return
 	}
 
+	payload.PostedBy = ctx.GetInt("user_id")
 	err2 := h.productService.Store(&payload)
 	if err2 != nil {
 		if errors.Is(err2, apperror.ErrInvalidUserIdOrCategoryId) {

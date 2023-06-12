@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"product-api/api"
 	"product-api/db"
+	"product-api/middleware"
 	"product-api/model"
 	"product-api/repository"
 	"product-api/service"
@@ -53,14 +54,17 @@ func main() {
 
 	productRouter := router.Group("/product")
 	{
-		// TODO: validate auth user must login
+		productRouter.Use(middleware.Auth()) // API after this line  will be protected with auth (within code scope {productRouter})
 		productRouter.GET("/list", handler.GetListProduct)
 		productRouter.GET("/:id", handler.GetProductDetail)
+	}
 
-		// TODO: validate auth user must login with role ADMIN
-		productRouter.POST("/add", handler.StoreProduct)
-		productRouter.PUT("/:id", handler.UpdateProduct)
-		productRouter.DELETE("/:id", handler.DeleteProduct)
+	productAdmin := router.Group("/product")
+	{
+		productAdmin.Use(middleware.AuthAdmin()) // API after this line  will be protected with auth admin (within code scope {productAdmin})
+		productAdmin.POST("/add", handler.StoreProduct)
+		productAdmin.PUT("/:id", handler.UpdateProduct)
+		productAdmin.DELETE("/:id", handler.DeleteProduct)
 	}
 
 	router.Run(":3000")
