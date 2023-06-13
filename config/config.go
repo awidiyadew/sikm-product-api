@@ -12,7 +12,7 @@ func GetenvInt(envName string) int {
 	strEnv := os.Getenv(envName)
 	i, err := strconv.Atoi(strEnv)
 	if err != nil {
-		log.Fatalf("error parsing env %v to int: %v", envName, err)
+		log.Printf("error parsing env %v to int: %v\n", envName, err)
 	}
 	return i
 }
@@ -32,7 +32,7 @@ var Config *config
 func Init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("error loading .env file")
+		log.Println("error loading .env file")
 	}
 
 	if Config == nil {

@@ -69,5 +69,5 @@ func main() {
 		productAdmin.DELETE("/:id", handler.DeleteProduct)
 	}
 
-	router.Run(":3000")
+	router.Run(":" + cfg.Config.AppPort)
 }
