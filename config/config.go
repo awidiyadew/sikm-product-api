@@ -37,7 +37,7 @@ func Init() {
 
 	if Config == nil {
 		Config = &config{
-			AppPort:    os.Getenv("APP_PORT"),
+			AppPort:    os.Getenv("PORT"),
 			DBHost:     os.Getenv("DB_HOST"),
 			DBUsername: os.Getenv("DB_USERNAME"),
 			DBPassword: os.Getenv("DB_PASSWORD"),
