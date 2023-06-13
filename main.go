@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"product-api/api"
-	"product-api/config"
+	cfg "product-api/config"
 	"product-api/db"
 	"product-api/middleware"
 	"product-api/model"
@@ -25,13 +25,13 @@ func NewHandler(db *gorm.DB) *api.APIHandler {
 }
 
 func main() {
-	config.Init()
+	cfg.Init()
 	db, err := db.Connect(db.DBCredential{
-		Host:         config.DBHost,
-		Username:     config.DBUsername,
-		Password:     config.DBPassword,
-		DatabaseName: config.DBName,
-		Port:         config.DBPort,
+		Host:         cfg.Config.DBHost,
+		Username:     cfg.Config.DBUsername,
+		Password:     cfg.Config.DBPassword,
+		DatabaseName: cfg.Config.DBName,
+		Port:         cfg.Config.DBPort,
 	})
 	if err != nil {
 		log.Fatal("failed to connect db", err)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	cfg "product-api/config"
 	"product-api/model"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func validateJWT(c *gin.Context) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return model.JwtKey, nil
+		return cfg.Config.JWTKey, nil
 	})
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, model.NewErrorResponse("unauthorized"))
