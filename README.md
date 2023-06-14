@@ -213,3 +213,24 @@ During this session we will deploy our service to [railway](https://railway.app/
 - Setup the environment variables on your `product-api` service so it can connect to the PostgreSQL.
 - Setup free railway domain.
 - Test the API with Postman.
+
+### Bonus - Swagger Docs Tutorials
+Swagger is an API documentation tools that follow OPEN API specs. Below is steps to setup swagger docs with swagger-ui.
+
+1. Create your swagger yaml with the online [swagger editor](https://editor.swagger.io/), it's ery easy to create the docs, you can copy paste and edit the example from the `Swagger Petstore` example. After editing is done, then click `File` and `Save as YAML`.
+1. Rename the downloaded `yaml` file to `swagger.yaml`.
+1. Download latest release of the swagger-ui [here](https://github.com/swagger-api/swagger-ui/releases), please download as zip.
+1. Extract the downloaded file, copy all the contents of `dist` directory to your project with directory name `swagger-ui` on your root project.
+1. Copy file `swagger.yaml` from step no 2 to directory `swagger-ui` in your project.
+1. Open file `swagger-ui/swagger-initializer.js` and update the options `url` with values:
+    ```
+    window.ui = SwaggerUIBundle({
+        url: "swagger.yaml", // path to yaml file
+        // ...rest of the code
+    ```
+1. Open `main.go` and register a static route to the `swagger-ui` directory.
+    ```
+    // register API `/docs` for the swagger-ui
+    router.Static("/docs", "swagger-ui")
+    ```
+1. Run the apps and try to access your api on path `/docs`!.
