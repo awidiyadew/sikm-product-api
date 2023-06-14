@@ -200,4 +200,16 @@ Below is the Authorization rules/access on our API base on user's role:
 Read docs on [how to validate token](https://pkg.go.dev/github.com/golang-jwt/jwt/v5#example-Parse-Hmac).
 
 ### Session 3: Deployment 
-TBA
+
+During this session we will deploy our service to [railway](https://railway.app/).
+
+#### Steps to follows:
+- Move configuration to env variables, we will use [godotenv](https://github.com/joho/godotenv) to read env from `.env` file.
+- Pull to the latest changes on `master` branch or fork this repository with the [latest commit](https://github.com/awidiyadew/sikm-product-api/commit/adb67ad48184370e9878278dc29d6c4a66161056).
+- Signup to [railway](https://railway.app/) with your github account.
+- Create a new project on railway
+- Create a database project with PostgreSQL on railway
+- Create a new service and connect to your Github repo `product-api`
+- Setup the environment variables on your `product-api` service so it can connect to the PostgreSQL.
+- Setup free railway domain.
+- Test the API with Postman.
