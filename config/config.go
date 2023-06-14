@@ -32,7 +32,7 @@ var Config *config
 func Init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("error loading .env file")
+		log.Printf("error loading .env file: %v\n", err)
 	}
 
 	if Config == nil {
