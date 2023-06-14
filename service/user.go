@@ -4,6 +4,7 @@ import (
 	"product-api/apperror"
 	"product-api/model"
 	"product-api/repository"
+	cfg "product-api/config"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -37,7 +38,7 @@ func (s *userServiceImpl) generateToken(user *model.User) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(model.JwtKey)
+	return token.SignedString(cfg.Config.JWTKey)
 }
 
 func (s *userServiceImpl) Login(payload *model.LoginRequest) (token string, err error) {
